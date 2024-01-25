@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:staged": "jest"
+    "test:staged": "jest",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "keywords": [],
   "author": "",
