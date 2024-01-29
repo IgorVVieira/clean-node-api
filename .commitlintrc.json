@@ -7,6 +7,7 @@
       2,
       "always",
       [
+        "test",
         "ci",
         "chore",
         "docs",
