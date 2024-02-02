@@ -2,28 +2,38 @@ import { InvalidParamError, MissinParamError, ServerError } from '../errors/'
 import { type IEmailValidator, type HttpRequest } from '../protocols'
 import { SignUpController } from './sign-up'
 
-interface SutTypes {
-  sut: SignUpController
-  emailValidatorStub: IEmailValidator
-}
+// interface SutTypes {
+//   sut: SignUpController
+//   emailValidatorStub: IEmailValidator
+// }
 
-const makeSut = (): SutTypes => {
+const makeEmailValidator = (): IEmailValidator => {
   // Stub is a fake implementation of a class, always returning the same value
   class EmailValidatorStub implements IEmailValidator {
     isValid (_email: string): boolean {
       return true
     }
   }
-  const emailValidator = new EmailValidatorStub()
-  return {
-    sut: new SignUpController(emailValidator),
-    emailValidatorStub: emailValidator
+  return new EmailValidatorStub()
+}
+
+const makeEmailValidatorWithError = (): IEmailValidator => {
+  // Stub is a fake implementation of a class, always returning the same value
+  class EmailValidatorStub implements IEmailValidator {
+    isValid (_email: string): boolean {
+      throw new Error()
+    }
   }
+  return new EmailValidatorStub()
+}
+
+const makeSut = (emailValidator: IEmailValidator): SignUpController => {
+  return new SignUpController(emailValidator)
 }
 
 describe('SignUp Controller', () => {
   test('should return 400 if no name is provided', () => {
-    const { sut } = makeSut()
+    const sut = makeSut(makeEmailValidator())
     const httpRequest: HttpRequest = {
       body: {
         email: 'any_email@mail.com',
@@ -37,7 +47,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no email is provided', () => {
-    const { sut } = makeSut()
+    const sut = makeSut(makeEmailValidator())
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -51,7 +61,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no password is provided', () => {
-    const { sut } = makeSut()
+    const sut = makeSut(makeEmailValidator())
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -65,7 +75,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no password confirmation is provided', () => {
-    const { sut } = makeSut()
+    const sut = makeSut(makeEmailValidator())
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -79,7 +89,8 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if an invalid email is provided', () => {
-    const { sut, emailValidatorStub } = makeSut()
+    const emailValidatorStub = makeEmailValidator()
+    const sut = makeSut(emailValidatorStub)
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -97,7 +108,8 @@ describe('SignUp Controller', () => {
   })
 
   test('should call EmailValidator with correct email', () => {
-    const { sut, emailValidatorStub } = makeSut()
+    const emailValidatorStub = makeEmailValidator()
+    const sut = makeSut(emailValidatorStub)
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -114,13 +126,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 500 if EmailValidator throws', () => {
-    class EmailValidatorStub implements IEmailValidator {
-      isValid (_email: string): boolean {
-        throw new Error()
-      }
-    }
-    const emailValidatorStub = new EmailValidatorStub()
-    const sut = new SignUpController(emailValidatorStub)
+    const sut = makeSut(makeEmailValidatorWithError())
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
