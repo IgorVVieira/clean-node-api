@@ -1,7 +1,6 @@
-import { type IAddAccount } from '../../domain/use-cases/add-account.interface'
-import { MissinParamError, InvalidParamError } from '../errors/'
-import { badRequest, serverError } from '../helpers/http-helper'
-import { type IEmailValidator, type IController, type HttpRequest, type HttpResponse } from '../protocols/'
+import { MissinParamError, InvalidParamError } from '../../errors'
+import { badRequest, serverError } from '../../helpers/http-helper'
+import { type IEmailValidator, type IController, type HttpRequest, type HttpResponse, type IAddAccount } from './sign-uop-protocols'
 
 export class SignUpController implements IController {
   constructor(

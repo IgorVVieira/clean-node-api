@@ -1,7 +1,5 @@
-import { type IAccountModel } from '../../domain/models/account'
-import { type IAddAccount, type IAddAccountModel } from '../../domain/use-cases/add-account.interface'
-import { InvalidParamError, MissinParamError, ServerError } from '../errors/'
-import { type IEmailValidator, type HttpRequest } from '../protocols'
+import { InvalidParamError, MissinParamError, ServerError } from '../../errors'
+import { type IEmailValidator, type IAccountModel, type HttpRequest, type IAddAccount, type IAddAccountModel } from './sign-uop-protocols'
 import { SignUpController } from './sign-up'
 
 const makeEmailValidator = (): IEmailValidator => {
