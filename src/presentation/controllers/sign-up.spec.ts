@@ -1,29 +1,42 @@
+import { type IAccountModel } from '../../domain/models/account'
+import { type IAddAccount, type IAddAccountModel } from '../../domain/use-cases/add-account.interface'
 import { InvalidParamError, MissinParamError, ServerError } from '../errors/'
 import { type IEmailValidator, type HttpRequest } from '../protocols'
 import { SignUpController } from './sign-up'
 
-// interface SutTypes {
-//   sut: SignUpController
-//   emailValidatorStub: IEmailValidator
-// }
-
 const makeEmailValidator = (): IEmailValidator => {
   // Stub is a fake implementation of a class, always returning the same value
   class EmailValidatorStub implements IEmailValidator {
-    isValid (_email: string): boolean {
+    isValid(_email: string): boolean {
       return true
     }
   }
   return new EmailValidatorStub()
 }
 
-const makeSut = (emailValidator: IEmailValidator): SignUpController => {
-  return new SignUpController(emailValidator)
+const makeAddAccount = (): IAddAccount => {
+  class AddAccountStub implements IAddAccount {
+    execute(account: IAddAccountModel): IAccountModel {
+      return {
+        id: 'valid_id',
+        name: account.name,
+        email: account.email,
+        password: account.password
+      }
+    }
+  }
+  return new AddAccountStub()
+}
+
+const makeSut = (emailValidator?: IEmailValidator, addAccount?: IAddAccount): SignUpController => {
+  emailValidator = emailValidator ?? makeEmailValidator()
+  addAccount = addAccount ?? makeAddAccount()
+  return new SignUpController(emailValidator, addAccount)
 }
 
 describe('SignUp Controller', () => {
   test('should return 400 if no name is provided', () => {
-    const sut = makeSut(makeEmailValidator())
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         email: 'any_email@mail.com',
@@ -37,7 +50,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no email is provided', () => {
-    const sut = makeSut(makeEmailValidator())
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -51,7 +64,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no password is provided', () => {
-    const sut = makeSut(makeEmailValidator())
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -65,7 +78,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if no password confirmation is provided', () => {
-    const sut = makeSut(makeEmailValidator())
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -98,7 +111,7 @@ describe('SignUp Controller', () => {
   })
 
   test('should return 400 if password confirmation fails', () => {
-    const sut = makeSut(makeEmailValidator())
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         name: 'any_name',
@@ -149,5 +162,28 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+  test('should call AddAccount with correct values', () => {
+    const addAccountStub = makeAddAccount()
+    const sut = makeSut(makeEmailValidator(), addAccountStub)
+    const httpRequest: HttpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const { name, email, password } = httpRequest.body
+    // spy on a method and mock its return value
+    const addSpy = jest.spyOn(addAccountStub, 'execute')
+
+    sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith({
+      name,
+      email,
+      password
+    })
   })
 })
