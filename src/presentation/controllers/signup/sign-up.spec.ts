@@ -1,5 +1,5 @@
 import { InvalidParamError, MissinParamError, ServerError } from '../../errors'
-import { type IEmailValidator, type IAccountModel, type HttpRequest, type IAddAccount, type IAddAccountModel } from './sign-uop-protocols'
+import { type IEmailValidator, type IAccountModel, type HttpRequest, type IAddAccount, type IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
 
 const makeEmailValidator = (): IEmailValidator => {
@@ -183,5 +183,25 @@ describe('SignUp Controller', () => {
       email,
       password
     })
+  })
+
+  test('should return 500 if AddAccount throws', () => {
+    const addAccountStub = makeAddAccount()
+    jest.spyOn(addAccountStub, 'execute').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const sut = makeSut(makeEmailValidator(), addAccountStub)
+    const httpRequest: HttpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'invalid_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 })
