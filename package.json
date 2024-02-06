@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:staged": "jest --passWithNoTests",
+    "test:unit": "jest -c jest-unit.config.js --runInBand",
+    "test:silent": "jest --silent",
     "test:watch": "jest --watch",
+    "test:staged": "jest --passWithNoTests --silent --findRelatedTests",
+    "test:integration": "jest -c jest-integration.config.js",
+    "test:ci": "jest --coverage --silent",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },
