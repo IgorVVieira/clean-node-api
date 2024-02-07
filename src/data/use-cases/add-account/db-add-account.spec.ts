@@ -1,0 +1,30 @@
+import { type IAddAccountModel } from '../../../domain/use-cases/add-account.interface'
+import { type IEncrypter } from '../../protocols/encypter.interface'
+import { DbAddAccount } from './db-add-account'
+
+const makeFakeAccountData = (): IAddAccountModel => ({
+  name: 'valid_name',
+  email: 'valid_email',
+  password: 'valid_password'
+})
+
+export const makeEncypter = (): IEncrypter => {
+  class EncrypterStub {
+    async encrypt(value: string): Promise<string> {
+      return 'hashed_password'
+    }
+  }
+
+  return new EncrypterStub()
+}
+
+describe('DbAddAccount UseCase', () => {
+  test('should call Encrypter with correct password', async () => {
+    const encrypterStub = makeEncypter()
+    const sut = new DbAddAccount(encrypterStub)
+    const encrypterSpy = jest.spyOn(encrypterStub, 'encrypt')
+
+    await sut.execute(makeFakeAccountData())
+    expect(encrypterSpy).toHaveBeenCalledWith('valid_password')
+  })
+})
