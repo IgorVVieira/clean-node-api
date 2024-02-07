@@ -14,7 +14,7 @@ const makeSut = (encypter?: IEncrypter): IAddAccount => {
 }
 
 export const makeEncypter = (): IEncrypter => {
-  class EncrypterStub {
+  class EncrypterStub implements IEncrypter {
     async encrypt(value: string): Promise<string> {
       return 'hashed_password'
     }
