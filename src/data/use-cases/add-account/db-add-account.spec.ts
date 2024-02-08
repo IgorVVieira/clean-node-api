@@ -73,4 +73,18 @@ describe('DbAddAccount UseCase', () => {
 
     await expect(sut.execute(makeFakeAccountData())).rejects.toThrow()
   })
+
+  test('should call return correct account on success', async () => {
+    const sut = makeSut()
+
+    const data = makeFakeAccountData()
+    const account = await sut.execute(data)
+
+    expect(account).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'hashed_password'
+    })
+  })
 })
