@@ -1,4 +1,4 @@
-import { type IAddAccount, type IAddAccountModel, type IEncrypter, DbAddAccount } from './db-add-account-protocols'
+import { type IAddAccount, type IAddAccountModel, type IEncrypter, DbAddAccount, type IAccountModel, type IAddAccountRepository } from './db-add-account-protocols'
 
 const makeFakeAccountData = (): IAddAccountModel => ({
   name: 'valid_name',
@@ -6,9 +6,10 @@ const makeFakeAccountData = (): IAddAccountModel => ({
   password: 'valid_password'
 })
 
-const makeSut = (encypter?: IEncrypter): IAddAccount => {
+const makeSut = (encypter?: IEncrypter, addAccountRepository?: IAddAccountRepository): IAddAccount => {
   encypter = encypter ?? makeEncypter()
-  return new DbAddAccount(encypter)
+  addAccountRepository = addAccountRepository ?? makeAddAccountRepository()
+  return new DbAddAccount(encypter, addAccountRepository)
 }
 
 export const makeEncypter = (): IEncrypter => {
@@ -18,6 +19,20 @@ export const makeEncypter = (): IEncrypter => {
     }
   }
   return new EncrypterStub()
+}
+
+export const makeAddAccountRepository = (): IAddAccountRepository => {
+  class AddAccountRepositoryStub implements IAddAccountRepository {
+    async add(account: IAddAccountModel): Promise<IAccountModel> {
+      return {
+        id: 'valid_id',
+        name: 'valid_name',
+        email: 'valid_email',
+        password: 'hashed_password'
+      }
+    }
+  }
+  return new AddAccountRepositoryStub()
 }
 
 describe('DbAddAccount UseCase', () => {
@@ -36,5 +51,18 @@ describe('DbAddAccount UseCase', () => {
     jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()) }))
 
     await expect(sut.execute(makeFakeAccountData())).rejects.toThrow()
+  })
+
+  test('should call AddAccountRepository with data', async () => {
+    const addAccountRepositoryStub = makeAddAccountRepository()
+    const sut = makeSut(makeEncypter(), addAccountRepositoryStub)
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+
+    const data = makeFakeAccountData()
+    await sut.execute(data)
+    expect(addSpy).toHaveBeenCalledWith({
+      ...data,
+      password: 'hashed_password'
+    })
   })
 })
