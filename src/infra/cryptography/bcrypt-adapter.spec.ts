@@ -29,4 +29,13 @@ describe('BcryptAdapter', () => {
     const hash = await sut.encrypt(password)
     expect(hash).toBe('hashed_value')
   })
+
+  test('it should throws if bcrypt throws', async () => {
+    const sut = makeSut()
+    const password = 'any_value'
+    const bcryptHash = jest.fn().mockRejectedValue(new Error('Random error'));
+    (bcrypt.hash as jest.Mock) = bcryptHash
+
+    await expect(sut.encrypt(password)).rejects.toThrow()
+  })
 })
