@@ -15,7 +15,7 @@ describe('Account Mongo Repository', () => {
   })
 
   it('should return an account on success', async () => {
-    const sut = new AccountMongoRepository()
+    const sut = makeSut()
     const mockAccount = {
       name: 'any_name',
       email: 'any_mail@mail.com',
