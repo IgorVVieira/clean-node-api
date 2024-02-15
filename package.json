@@ -20,8 +20,10 @@
   "devDependencies": {
     "@commitlint/cli": "^18.6.0",
     "@commitlint/config-conventional": "^18.6.0",
+    "@shelf/jest-mongodb": "^4.2.0",
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.11",
+    "@types/mongodb": "^4.0.7",
     "@types/node": "^20.11.6",
     "@types/validator": "^13.11.9",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
@@ -38,6 +40,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "mongodb": "^6.3.0",
     "validator": "^13.11.0"
   }
 }
