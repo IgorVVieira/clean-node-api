@@ -16,4 +16,11 @@ export class MongoHelper {
   static async getCollection(name: string): Promise<Collection> {
     return this.client.db().collection(name)
   }
+
+  static toDomain<T>(result: any, data: any): T {
+    return {
+      ...data,
+      id: result.insertedId.toString()
+    }
+  }
 }

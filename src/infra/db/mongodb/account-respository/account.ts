@@ -8,9 +8,6 @@ export class AccountMongoRepository implements IAddAccountRepository {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(account)
 
-    return {
-      ...account,
-      id: result.insertedId.toString()
-    }
+    return MongoHelper.toDomain<IAccountModel>(result, account)
   }
 }
