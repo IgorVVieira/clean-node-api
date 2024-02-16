@@ -1,9 +1,12 @@
 // Camada onde se cria todas instancias de objetos e configurações do servidor
-// Onde sera definido os factories e middlewares
+import { MongoHelper } from '../infra/db/mongodb/helper/mongo'
+import env from './config/env'
 
-import app from './config/app'
-
-const port = process.env.PORT ?? 3333
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`)
-})
+const { port, mongoUrl } = env
+MongoHelper.connect(mongoUrl).then(async () => {
+  console.log('Connected to MongoDB')
+  const app = (await import('./config/app')).default
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`)
+  })
+}).catch(console.error)
