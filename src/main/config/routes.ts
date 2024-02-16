@@ -1,4 +1,4 @@
-import { type Express, Router } from 'express'
+import { Express, Router } from 'express'
 import fastGlob from 'fast-glob'
 
 export default async (app: Express): Promise<void> => {

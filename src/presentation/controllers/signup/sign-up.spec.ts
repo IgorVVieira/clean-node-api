@@ -1,5 +1,5 @@
 import { InvalidParamError, MissinParamError, ServerError } from '../../errors'
-import { type IEmailValidator, type IAccountModel, type HttpRequest, type IAddAccount, type IAddAccountModel } from './sign-up-protocols'
+import { IEmailValidator, IAccountModel, HttpRequest, IAddAccount, IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
 
 const makeEmailValidator = (): IEmailValidator => {

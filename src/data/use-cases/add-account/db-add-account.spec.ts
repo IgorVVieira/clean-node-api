@@ -1,4 +1,4 @@
-import { type IAddAccount, type IAddAccountModel, type IEncrypter, DbAddAccount, type IAccountModel, type IAddAccountRepository } from './db-add-account-protocols'
+import { IAddAccount, IAddAccountModel, IEncrypter, DbAddAccount, IAccountModel, IAddAccountRepository } from './db-add-account-protocols'
 
 const makeFakeAccountData = (): IAddAccountModel => ({
   name: 'valid_name',

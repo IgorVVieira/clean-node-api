@@ -1,4 +1,4 @@
-import { type Collection, MongoClient } from 'mongodb'
+import { Collection, MongoClient } from 'mongodb'
 
 export class MongoHelper {
   private static client: MongoClient

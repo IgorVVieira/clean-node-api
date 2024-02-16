@@ -1,6 +1,6 @@
 import { MissinParamError, InvalidParamError } from '../../errors'
 import { badRequest, serverError, sucesss } from '../../helpers/http-helper'
-import { type IEmailValidator, type IController, type HttpRequest, type HttpResponse, type IAddAccount } from './sign-up-protocols'
+import { IEmailValidator, IController, HttpRequest, HttpResponse, IAddAccount } from './sign-up-protocols'
 
 export class SignUpController implements IController {
   constructor(

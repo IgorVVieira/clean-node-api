@@ -1,4 +1,4 @@
-import { type IAddAccountRepository, type IAccountModel, type IAddAccount, type IAddAccountModel, type IEncrypter } from './db-add-account-protocols'
+import { IAddAccountRepository, IAccountModel, IAddAccount, IAddAccountModel, IEncrypter } from './db-add-account-protocols'
 
 export class DbAddAccount implements IAddAccount {
   constructor(
