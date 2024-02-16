@@ -21,7 +21,7 @@ export class MongoHelper {
     const { _id, ...dataWithoutId } = data
     return {
       id: result.insertedId.toString(),
-      ...dataWithoutId,
+      ...dataWithoutId
     }
   }
 }
