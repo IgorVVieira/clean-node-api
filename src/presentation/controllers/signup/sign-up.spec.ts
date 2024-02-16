@@ -1,4 +1,4 @@
-import { InvalidParamError, MissinParamError, ServerError } from '../../errors'
+import { InvalidParamError, MissinParamError, ServerError } from '@presentation/errors'
 import { IEmailValidator, IAccountModel, HttpRequest, IAddAccount, IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
 

@@ -23,7 +23,7 @@ export const makeEncypter = (): IEncrypter => {
 
 export const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
-    async add(account: IAddAccountModel): Promise<IAccountModel> {
+    async add(_account: IAddAccountModel): Promise<IAccountModel> {
       return {
         id: 'valid_id',
         name: 'valid_name',
