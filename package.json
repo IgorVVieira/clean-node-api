@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "sucrase-node src/main/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/main/server.ts",
     "test": "jest",
     "test:unit": "jest -c jest-unit.config.js --runInBand",
     "test:silent": "jest --silent",
@@ -43,6 +43,8 @@
     "sucrase": "^3.35.0",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {

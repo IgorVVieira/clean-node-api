@@ -18,9 +18,10 @@ export class MongoHelper {
   }
 
   static toDomain<T>(result: any, data: any): T {
+    const { _id, ...dataWithoutId } = data
     return {
-      ...data,
-      id: result.insertedId.toString()
+      id: result.insertedId.toString(),
+      ...dataWithoutId,
     }
   }
 }
