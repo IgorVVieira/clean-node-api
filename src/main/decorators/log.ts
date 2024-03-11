@@ -1,7 +1,6 @@
-// Decorator: A class que implementa a mesma interface que queremos decorar, e recebe a classe que queremos decorar no construtor.
-
 import { HttpRequest, HttpResponse, IController } from '@presentation/protocols'
 
+// Decorator: A class que implementa a mesma interface que queremos decorar, e recebe a classe que queremos decorar no construtor.
 // O decorator é uma forma de adicionar funcionalidades a uma classe sem alterar o seu código. Principio do Open/Closed. SOLID
 export class LogControllerDecorator implements IController {
   constructor(private readonly controller: IController) { }
