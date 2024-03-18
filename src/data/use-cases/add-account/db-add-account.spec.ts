@@ -6,6 +6,14 @@ const makeFakeAccountData = (): IAddAccountModel => ({
   password: 'valid_password'
 })
 
+const makeFakeAccountCreated = (): IAccountModel => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email',
+  password: 'hashed_password'
+
+})
+
 const makeSut = (encypter?: IEncrypter, addAccountRepository?: IAddAccountRepository): IAddAccount => {
   encypter = encypter ?? makeEncypter()
   addAccountRepository = addAccountRepository ?? makeAddAccountRepository()
@@ -24,12 +32,7 @@ export const makeEncypter = (): IEncrypter => {
 export const makeAddAccountRepository = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
     async add(_account: IAddAccountModel): Promise<IAccountModel> {
-      return {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email',
-        password: 'hashed_password'
-      }
+      return makeFakeAccountCreated()
     }
   }
   return new AddAccountRepositoryStub()
@@ -80,11 +83,6 @@ describe('DbAddAccount UseCase', () => {
     const data = makeFakeAccountData()
     const account = await sut.execute(data)
 
-    expect(account).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email',
-      password: 'hashed_password'
-    })
+    expect(account).toEqual(makeFakeAccountCreated())
   })
 })
