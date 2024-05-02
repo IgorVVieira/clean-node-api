@@ -3,12 +3,12 @@ import { badRequest, serverError, sucesss } from '@presentation/helpers/http-hel
 import { IEmailValidator, IController, HttpRequest, HttpResponse, IAddAccount } from './sign-up-protocols'
 
 export class SignUpController implements IController {
-  constructor(
+  public constructor(
     private readonly emailValidator: IEmailValidator,
     private readonly addAccount: IAddAccount) {
   }
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  public async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
       for (const field of requiredFields) {

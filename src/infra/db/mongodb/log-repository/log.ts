@@ -2,7 +2,7 @@ import { ILogErrorRepository } from '@data/protocols/log-error-repository.interf
 import { MongoHelper } from '../helper/mongo'
 
 export class LogMongoRepository implements ILogErrorRepository {
-  async logError(stack: string): Promise<void> {
+  public async logError(stack: string): Promise<void> {
     const errorCollection = await MongoHelper.getCollection('errors')
     await errorCollection.insertOne({
       stack,
