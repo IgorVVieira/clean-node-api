@@ -11,10 +11,8 @@ export class LogControllerDecorator implements IController {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const httpResponse = await this.controller.handle(httpRequest)
-    console.log(httpResponse)
     if (httpResponse.statusCode === 500) {
-      console.log('caiu no log')
-      await this.logErrorRepository.log(httpResponse.body.stack as string)
+      await this.logErrorRepository.logError(httpResponse.body.stack as string)
     }
     return httpResponse
   }
