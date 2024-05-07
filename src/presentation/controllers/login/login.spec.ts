@@ -2,6 +2,8 @@ import { badRequest } from '@presentation/helpers/http-helper'
 import { LoginController } from './login'
 import { MissinParamError } from '@presentation/errors'
 
+const makeSut = (): LoginController => {}
+
 describe('Login Controller', () => {
   test('Should return 400 if no email is provided', async () => {
     const sut = new LoginController()
@@ -21,11 +23,11 @@ describe('Login Controller', () => {
 
     const httpRequest = {
       body: {
-        password: 'any_password'
+        email: 'any_email'
       }
     }
 
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('email')))
+    expect(httpResponse).toEqual(badRequest(new MissinParamError('password')))
   })
 })
