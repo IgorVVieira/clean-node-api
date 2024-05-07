@@ -2,11 +2,13 @@ import { badRequest } from '@presentation/helpers/http-helper'
 import { LoginController } from './login'
 import { MissinParamError } from '@presentation/errors'
 
-const makeSut = (): LoginController => {}
+const makeSut = (): LoginController => {
+  return new LoginController()
+}
 
 describe('Login Controller', () => {
   test('Should return 400 if no email is provided', async () => {
-    const sut = new LoginController()
+    const sut = makeSut()
 
     const httpRequest = {
       body: {
@@ -19,7 +21,7 @@ describe('Login Controller', () => {
   })
 
   test('Should return 400 if no password is provided', async () => {
-    const sut = new LoginController()
+    const sut = makeSut()
 
     const httpRequest = {
       body: {
