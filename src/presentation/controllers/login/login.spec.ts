@@ -1,6 +1,6 @@
 import { badRequest } from '@presentation/helpers/http-helper'
 import { LoginController } from './login'
-import { MissinParamError } from '@presentation/errors'
+import { InvalidParamError, MissinParamError } from '@presentation/errors'
 
 const emailValidator = {
   isValid: jest.fn()
@@ -56,16 +56,18 @@ describe('Login Controller', () => {
     expect(isValidSpy).toHaveBeenCalledWith('any_email')
   })
 
-  test('Should return 400 if no password is provided', async () => {
+  test('Should return 400 if email is invalid', async () => {
     const sut = makeSut()
+    emailValidator.isValid.mockReturnValueOnce(false)
 
     const httpRequest = {
       body: {
-        email: 'any_email'
+        email: 'any_email',
+        password: 'any_password'
       }
     }
 
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('password')))
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('email')))
   })
 })
