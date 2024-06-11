@@ -3,10 +3,13 @@ import { HttpRequest } from '../signup/sign-up-protocols'
 import { LoginController } from './login'
 import { MissingParamError } from '@presentation/errors'
 
+const makeSut = (): LoginController => {
+  return new LoginController()
+}
 
 describe('Login Controller', () => {
   test('Should return 400 if no email is provided', async () => {
-    const sut = new LoginController()
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         password: 'any_password'
@@ -17,7 +20,7 @@ describe('Login Controller', () => {
   })
 
   test('Should return 400 if no password is provided', async () => {
-    const sut = new LoginController()
+    const sut = makeSut()
     const httpRequest: HttpRequest = {
       body: {
         email: 'any_email@mail.com'
