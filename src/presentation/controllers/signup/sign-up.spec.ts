@@ -1,4 +1,4 @@
-import { InvalidParamError, MissinParamError, ServerError } from '@presentation/errors'
+import { InvalidParamError, MissingParamError, ServerError } from '@presentation/errors'
 import { IEmailValidator, IAccountModel, HttpRequest, IAddAccount, IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
 import { badRequest, serverError, sucesss } from '@presentation/helpers/http-helper'
@@ -52,7 +52,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('name')))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
 
   test('should return 400 if no email is provided', async () => {
@@ -65,7 +65,7 @@ describe('SignUp Controller', () => {
       }
     }
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('email')))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
   test('should return 400 if no password is provided', async () => {
@@ -79,7 +79,7 @@ describe('SignUp Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('password')))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
   })
 
   test('should return 400 if no password confirmation is provided', async () => {
@@ -92,7 +92,7 @@ describe('SignUp Controller', () => {
       }
     }
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissinParamError('passwordConfirmation')))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('passwordConfirmation')))
   })
 
   test('should return 400 if an invalid email is provided', async () => {
