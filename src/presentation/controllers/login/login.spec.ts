@@ -3,9 +3,17 @@ import { HttpRequest } from '../signup/sign-up-protocols'
 import { LoginController } from './login'
 import { MissingParamError } from '@presentation/errors'
 
-const makeSut = (): LoginController => {
-  return new LoginController()
+const emailValidator = {
+  isValid: jest.fn()
 }
+
+const makeSut = (): LoginController => {
+  return new LoginController(emailValidator)
+}
+
+beforeEach(() => {
+  emailValidator.isValid.mockResolvedValue(true)
+})
 
 describe('Login Controller', () => {
   test('Should return 400 if no email is provided', async () => {
@@ -29,4 +37,20 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
   })
+
+  test('Should call EmailValidator with correct email', async () => {
+    const sut = makeSut()
+    const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any@mail.com',
+        password: 'any_password'
+      }
+    }
+    await sut.handle(httpRequest)
+    expect(isValidSpy).toHaveBeenCalledWith('any@mail.com')
+  })
+
+
 })
