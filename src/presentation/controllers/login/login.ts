@@ -1,6 +1,6 @@
-import { badRequest } from '@presentation/helpers/http-helper'
+import { badRequest, sucesss } from '@presentation/helpers/http-helper'
 import { HttpRequest, HttpResponse, IController, IEmailValidator } from '../signup/sign-up-protocols'
-import { MissingParamError } from '@presentation/errors'
+import { InvalidParamError, MissingParamError } from '@presentation/errors'
 
 export class LoginController implements IController {
   public constructor(private readonly emailValidator: IEmailValidator) { }
@@ -15,7 +15,14 @@ export class LoginController implements IController {
     }
 
     const isValidEmail = this.emailValidator.isValid(email as string)
-    console.log(isValidEmail)
-    return await new Promise(resolve => { resolve(badRequest(new MissingParamError('email'))) })
+    if (!isValidEmail) {
+      return await new Promise(resolve => { resolve(badRequest(new InvalidParamError('email'))) })
+    }
+
+    return await new Promise(resolve => {
+      resolve(sucesss({
+        email, password
+      }))
+    })
   }
 }
