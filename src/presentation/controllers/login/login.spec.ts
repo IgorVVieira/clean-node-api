@@ -7,8 +7,12 @@ const emailValidator = {
   isValid: jest.fn()
 }
 
+const authenticationMock = {
+  auth: jest.fn()
+}
+
 const makeSut = (): LoginController => {
-  return new LoginController(emailValidator)
+  return new LoginController(emailValidator, authenticationMock)
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -86,5 +90,14 @@ describe('Login Controller', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(isValidSpy).toHaveBeenCalledWith('any@mail.com')
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const sut = makeSut()
+    const authSpy = jest.spyOn(authenticationMock, 'auth')
+
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(authSpy).toHaveBeenCalledWith('any@mail.com', 'any_password')
   })
 })
