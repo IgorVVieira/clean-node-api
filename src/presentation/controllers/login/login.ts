@@ -1,4 +1,4 @@
-import { badRequest, serverError, sucesss, unauthorized } from '@presentation/helpers/http-helper'
+import { badRequest, serverError, sucess, unauthorized } from '@presentation/helpers/http-helper'
 import { HttpRequest, HttpResponse, IController, IEmailValidator } from '../signup/sign-up-protocols'
 import { InvalidParamError, MissingParamError } from '@presentation/errors'
 import { IAuthentication } from '@domain/use-cases/authentication.interface'
@@ -24,12 +24,14 @@ export class LoginController implements IController {
         return await new Promise(resolve => { resolve(badRequest(new InvalidParamError('email'))) })
       }
 
-      const auth = await this.authentication.auth(email as string, password as string)
-      if (!auth) {
+      const accessToken = await this.authentication.auth(email as string, password as string)
+      if (!accessToken) {
         return unauthorized()
       }
 
-      return sucesss(auth)
+      return sucess({
+        accessToken
+      })
     } catch (error) {
       return serverError(error as Error)
     }

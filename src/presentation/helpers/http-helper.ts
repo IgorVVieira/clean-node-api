@@ -17,7 +17,7 @@ export const unauthorized = (): HttpResponse => ({
 
 })
 
-export const sucesss = (data: any): HttpResponse => ({
+export const sucess = (data: any): HttpResponse => ({
   statusCode: 200,
   body: data
 })
