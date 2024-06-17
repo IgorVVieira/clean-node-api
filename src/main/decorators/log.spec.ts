@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse, IController } from '@presentation/protocols'
-import { serverError, sucesss } from '@presentation/helpers/http-helper'
+import { serverError, sucess } from '@presentation/helpers/http-helper'
 import { LogControllerDecorator } from './log'
 import { ILogErrorRepository } from '@data/protocols/log-error-repository.interface'
 import { IAccountModel } from '@domain/models/account'
@@ -43,7 +43,7 @@ const makeLogErrorRepository = (): ILogErrorRepository => {
 const makeFakeController = (): IController => {
   class ControllerStub implements IController {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-      return await new Promise(resolve => { resolve(sucesss(makeFakeAccount)) })
+      return await new Promise(resolve => { resolve(sucess(makeFakeAccount)) })
     }
   }
   return new ControllerStub()
@@ -69,7 +69,7 @@ describe('LogControllerDecorator', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest())
 
-    expect(httpResponse).toEqual(sucesss(makeFakeAccount))
+    expect(httpResponse).toEqual(sucess(makeFakeAccount))
   })
 
   it('should call LogErrorRepository with correct error if controller returns a server error', async () => {

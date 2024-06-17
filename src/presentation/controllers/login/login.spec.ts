@@ -1,4 +1,4 @@
-import { badRequest, serverError, unauthorized } from '@presentation/helpers/http-helper'
+import { badRequest, serverError, sucess, unauthorized } from '@presentation/helpers/http-helper'
 import { HttpRequest } from '../signup/sign-up-protocols'
 import { LoginController } from './login'
 import { InvalidParamError, MissingParamError } from '@presentation/errors'
@@ -121,13 +121,16 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('Should return 200 if IAuthentication throws', async () => {
+  test('Should return 200 if all credentials are provided', async () => {
     const sut = makeSut()
-    jest.spyOn(authenticationMock, 'auth').mockResolvedValueOnce(Promise.reject(new Error()))
+
+    jest.spyOn(authenticationMock, 'auth').mockResolvedValueOnce('any_token')
 
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(serverError(new Error()))
+    expect(httpResponse).toEqual(sucess({
+      accessToken: 'any_token'
+    }))
   })
 })

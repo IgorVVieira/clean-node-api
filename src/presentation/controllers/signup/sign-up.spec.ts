@@ -1,7 +1,7 @@
 import { InvalidParamError, MissingParamError, ServerError } from '@presentation/errors'
 import { IEmailValidator, IAccountModel, HttpRequest, IAddAccount, IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
-import { badRequest, serverError, sucesss } from '@presentation/helpers/http-helper'
+import { badRequest, serverError, sucess } from '@presentation/helpers/http-helper'
 
 const makeEmailValidator = (): IEmailValidator => {
   // Stub is a fake implementation of a class, always returning the same value
@@ -173,6 +173,6 @@ describe('SignUp Controller', () => {
     const httpRequest = makeFakeRequest()
 
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(sucesss(makeFakeAccount()))
+    expect(httpResponse).toEqual(sucess(makeFakeAccount()))
   })
 })
