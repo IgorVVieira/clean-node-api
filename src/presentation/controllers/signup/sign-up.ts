@@ -1,15 +1,19 @@
 import { MissingParamError, InvalidParamError } from '@presentation/errors'
 import { badRequest, serverError, sucess } from '@presentation/helpers/http-helper'
 import { IEmailValidator, IController, HttpRequest, HttpResponse, IAddAccount } from './sign-up-protocols'
+import { IValidation } from '@presentation/helpers/validators/validation.interface'
 
 export class SignUpController implements IController {
   public constructor(
     private readonly emailValidator: IEmailValidator,
-    private readonly addAccount: IAddAccount) {
-  }
+    private readonly addAccount: IAddAccount,
+    private readonly validation: IValidation
+  ) { }
 
   public async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      this.validation.validate(httpRequest.body)
+
       const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
