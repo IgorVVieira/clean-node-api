@@ -32,7 +32,11 @@ const makeAddAccount = (): IAddAccount => {
 const makeSut = (emailValidator?: IEmailValidator, addAccount?: IAddAccount): SignUpController => {
   emailValidator = emailValidator ?? makeEmailValidator()
   addAccount = addAccount ?? makeAddAccount()
-  return new SignUpController(emailValidator, addAccount)
+  return new SignUpController(emailValidator, addAccount, validateMock)
+}
+
+const validateMock = {
+  validate: jest.fn()
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -174,5 +178,17 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(sucess(makeFakeAccount()))
+  })
+
+  test('should call Validation with correct value', async () => {
+    const addAccountStub = makeAddAccount()
+    const sut = makeSut(makeEmailValidator(), addAccountStub)
+
+    const validateSpy = jest.spyOn(validateMock, 'validate')
+
+    const httpRequest = makeFakeRequest()
+
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
