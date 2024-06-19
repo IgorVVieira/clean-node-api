@@ -1,4 +1,4 @@
-import { MissingParamError, InvalidParamError } from '@presentation/errors'
+import { InvalidParamError } from '@presentation/errors'
 import { badRequest, serverError, sucess } from '@presentation/helpers/http-helper'
 import { IEmailValidator, IController, HttpRequest, HttpResponse, IAddAccount } from './sign-up-protocols'
 import { IValidation } from '@presentation/helpers/validators/validation.interface'
@@ -17,12 +17,12 @@ export class SignUpController implements IController {
         return badRequest(error)
       }
 
-      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field))
-        }
-      }
+      // const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+      // for (const field of requiredFields) {
+      //   if (!httpRequest.body[field]) {
+      //     return badRequest(new MissingParamError(field))
+      //   }
+      // }
 
       const { name, email, password, passwordConfirmation } = httpRequest.body
       if (password !== passwordConfirmation) {
