@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/main/server.ts",
-    "test": "jest",
+    "test": "jest --maxWorkers=1",
     "test:unit": "jest -c jest-unit.config.js --runInBand",
     "test:silent": "jest --silent",
     "test:watch": "jest --watch",
