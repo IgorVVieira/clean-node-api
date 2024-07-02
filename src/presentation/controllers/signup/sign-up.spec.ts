@@ -86,7 +86,7 @@ describe('SignUp Controller', () => {
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
-  test('should return 400 if validation returns an error', async () => {
+  test('should return 400 if Validation returns an error', async () => {
     const sut = makeSut()
     const httpRequest = makeFakeRequest()
 
