@@ -5,7 +5,7 @@ export class CompareFieldsValidation implements IValidation {
   public constructor(private readonly fieldName: string, private readonly fieldToCompareName: string) { }
 
   public validate(input: any): Error | undefined {
-    if (!input[this.fieldName] !== input[this.fieldToCompareName]) {
+    if (input[this.fieldName] !== input[this.fieldToCompareName]) {
       return new InvalidParamError(this.fieldToCompareName)
     }
   }
