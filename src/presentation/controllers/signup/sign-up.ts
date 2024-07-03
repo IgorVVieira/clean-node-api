@@ -1,4 +1,4 @@
-import { badRequest, serverError, sucess } from '@presentation/helpers/http-helper'
+import { badRequest, serverError, sucess } from '@presentation/helpers/http/http-helper'
 import { IController, HttpRequest, HttpResponse, IAddAccount } from './sign-up-protocols'
 import { IValidation } from '@presentation/helpers/validators/validation.interface'
 

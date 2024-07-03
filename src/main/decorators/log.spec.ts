@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse, IController } from '@presentation/protocols'
-import { serverError, sucess } from '@presentation/helpers/http-helper'
+import { serverError, sucess } from '@presentation/helpers/http/http-helper'
 import { LogControllerDecorator } from './log'
 import { ILogErrorRepository } from '@data/protocols/log-error-repository.interface'
 import { IAccountModel } from '@domain/models/account'

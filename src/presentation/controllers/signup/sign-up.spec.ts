@@ -1,7 +1,7 @@
 import { InvalidParamError, ServerError } from '@presentation/errors'
 import { IAccountModel, HttpRequest, IAddAccount, IAddAccountModel } from './sign-up-protocols'
 import { SignUpController } from './sign-up'
-import { badRequest, serverError, sucess } from '@presentation/helpers/http-helper'
+import { badRequest, serverError, sucess } from '@presentation/helpers/http/http-helper'
 
 const makeFakeAccount = (): IAccountModel => ({
   id: 'valid_id',
