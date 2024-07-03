@@ -1,6 +1,6 @@
 import { ValidationComposite } from '@presentation/helpers/validators/validation-composite'
 import { RequiredFieldValidation } from '@presentation/helpers/validators/required-field-validation'
-import { IValidation } from '@presentation/helpers/validators/validation.interface'
+import { IValidation } from '@presentation/protocols/validation.interface'
 import { EmailValidation } from '@presentation/helpers/validators/email-validation'
 import { IEmailValidator } from '@presentation/protocols/email-validator'
 import { makeLoginValidation } from './login-validation'
