@@ -1,7 +1,4 @@
-import { CompareFieldsValidation } from '@presentation/helpers/validators/compara-fields-validation'
-import { EmailValidation } from '@presentation/helpers/validators/email-validation'
-import { RequiredFieldValidation } from '@presentation/helpers/validators/required-field-validation'
-import { ValidationComposite } from '@presentation/helpers/validators/validation-composite'
+import { CompareFieldsValidation, EmailValidation, RequiredFieldValidation, ValidationComposite } from '@presentation/helpers/validators'
 import { IValidation } from '@presentation/protocols/validation.interface'
 import { EmailValidatorAdapter } from '@utils/email-validator-adapter'
 
