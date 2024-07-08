@@ -17,4 +17,17 @@ describe('DbAuthentication UseCase', () => {
 
     expect(loadAccountByEmailSpy).toHaveBeenCalledWith(email)
   })
+
+  it('Should throw if load account by email throws', async () => {
+    const sut = makeSut()
+    const loadAccountByEmailSpy = jest.spyOn(loadAccountByEmailMock, 'load').mockImplementation(() => {
+      throw new Error('test')
+    })
+    const email = 'test@test.com'
+    const password = 'test'
+
+    await expect(sut.auth(email, password)).rejects.toThrow('test')
+
+    expect(loadAccountByEmailSpy).toHaveBeenCalledWith(email)
+  })
 })
